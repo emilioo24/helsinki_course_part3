@@ -41,10 +41,6 @@ let agenda = [
     }
 ];
 
-app.get('/', (req, res) => {
-    res.send('Hello World');
-});
-
 //muestra la lista total de personas
 app.get('/api/persons', (req, res) => {
     res.json(agenda);
