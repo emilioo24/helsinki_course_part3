@@ -131,7 +131,6 @@ const errorHandler = (error, req, res, next) => {
 app.use(errorHandler);
 
 //establece el puerto para el servidor
-let process = String;
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
