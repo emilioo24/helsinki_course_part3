@@ -9,7 +9,7 @@ app.use(express.static('dist'));
 app.use(cors());
 app.use(express.json());
 
-morgan.token('body', (req, res) => {
+morgan.token('body', (req) => {
     return JSON.stringify(req.body)
 });
 
@@ -53,7 +53,7 @@ app.get('/api/persons/:id', (req, res, next) => {
 //elimina una persona en específico por su id - DELETE
 app.delete('/api/persons/:id', (req, res, next) => {
     Person.findByIdAndDelete(req.params.id)
-        .then(result => {
+        .then(() => {
             res.status(204).end();
         })
         .catch(error => next(error));
@@ -131,6 +131,7 @@ const errorHandler = (error, req, res, next) => {
 app.use(errorHandler);
 
 //establece el puerto para el servidor
+let process = String;
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);

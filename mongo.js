@@ -35,7 +35,7 @@ const person = new Person({
 });
 
 if (print) {
-    Person.find({  }).then(result => {
+    Person.find({}).then(result => {
         console.log('phonebook:');
         result.forEach(person => {
           console.log(person.name, person.number);
@@ -43,7 +43,7 @@ if (print) {
         mongoose.connection.close();
     });
 } else {
-    person.save().then(result => {
+    person.save().then(() => {
         console.log(`added ${name} number ${number} to phonebook`);
         mongoose.connection.close();
     });
