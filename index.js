@@ -66,7 +66,7 @@ app.delete('/api/persons/:id', (req, res, next) => {
 }*/
 
 //añade una persona nueva al array - POST
-app.post('/api/persons', (req, res) => {
+app.post('/api/persons', (req, res, next) => {
     const body = req.body;
     //const verify = Person.find({ name: body.name }).then(name => name);
 
@@ -85,9 +85,12 @@ app.post('/api/persons', (req, res) => {
         number: body.number
     });
 
-    newData.save().then((savedData) => {
-        res.json(savedData);
-    });
+    newData.save()
+        .then((savedData) => {
+            res.json(savedData);
+        })
+        .catch(error => next(error));
+
 });
 
 //actualiza el número de una persona con el mismo nombre - PUT
@@ -99,7 +102,7 @@ app.put('/api/persons/:id', (req, res, next) => {
         number: body.number
     }
 
-    Person.findByIdAndUpdate(req.params.id, data, { new: true })
+    Person.findByIdAndUpdate(req.params.id, data, { new: true, runValidators: true, context: 'query' })
         .then(updatePerson => {
             res.json(updatePerson);
         })
@@ -118,7 +121,10 @@ const errorHandler = (error, req, res, next) => {
     console.error(error.message);
     if (error.name === 'CastError') {
         return res.status(400).send({ error: 'malformatted id' });
+    } else if (error.name === 'ValidationError') {
+        return res.status(400).json({ error: error.message  })
     }
+
     next(error);
 }
 
